@@ -7,7 +7,6 @@ ss    = length( names );
 intrac = {...
 'NeedHelp', 'TaskTime'; 'NeedHelp', 'Correct'};
 [intra, names] = mk_adj_mat( intrac, names, 1 );
-DBN = names;
 
 % inter-stage dependencies
 interc = {...
@@ -36,4 +35,27 @@ bnet = mk_dbn( intra, inter, ns, ...
   'eclass4', ecl4, ...
   'observed', onodes, ...
   'names', names );
-DBN  = bnet;
+
+NeedHelp0 = 1;
+TaskTime = 2;
+Correct = 3;
+NeedHelp1 = 4;
+
+% prior
+bnet.CPD{NeedHelp0} = tabular_CPD(bnet, NeedHelp0, 'CPT', [0.5 0.5]);
+
+% transition
+cpt = [0.8 0.1 0.2 0.9];
+bnet.CPD{NeedHelp1} = tabular_CPD(bnet, NeedHelp1, 'CPT', cpt);
+
+% observations
+cpt = [
+    0.5 0.1 ...
+    0.4 0.5 ...
+    0.1 0.4];
+bnet.CPD{TaskTime} = tabular_CPD(bnet, TaskTime, 'CPT', cpt);
+
+cpt = [0.8 0.6 0.2 0.4];
+bnet.CPD{Correct} = tabular_CPD(bnet, Correct, 'CPT', cpt);
+
+DBN = bnet;
