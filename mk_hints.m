@@ -68,3 +68,4 @@ cpt = [.7 .1 ...
 bnet.CPD{TimeOpen} = tabular_CPD(bnet, TimeOpen, 'CPT', cpt ); 
 
 DBN = bnet;
+sim_hints_decision(DBN, 1)

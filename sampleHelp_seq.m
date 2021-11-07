@@ -20,3 +20,7 @@ for t=1:T
     oval2 = stoch_obs('Correct', dbn, readval);
     ev{onode2, t} = oval2;
 end    
+
+function val = stoch_obs(varname, dbn, parentval)
+cpt = get_field(dbn.CPD{dbn.names( varname)}, 'cpt');
+val = sampleRow(cpt(parentval, :));
